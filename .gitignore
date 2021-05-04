@@ -1,0 +1,9 @@
+node_modules/
+site/.venv/
+site/__pycache__/
+site/static/dist
+test-dist/
+dist/
+*.code-workspace
+*.pyc
+.vscode
