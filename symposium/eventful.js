@@ -39,7 +39,7 @@ class Eventful {
                 context = handlers[i].context;
                 callback.apply(context, args);
             }
-        } 
+        }
     }
 }
 
