@@ -1,3 +1,5 @@
+[![Unittests](https://github.com/papermerge/symposium/actions/workflows/unittests.yml/badge.svg)](https://github.com/papermerge/symposium/actions/workflows/unittests.yml)
+
 # SymposiumJS
 
 Symposium is a javascript framework used across all frontend components of
