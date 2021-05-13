@@ -3,6 +3,17 @@ import { applyMixins, is_non_empty_array } from "./utils";
 
 
 class Collection extends Array {
+    /*
+    Collection is sort of Array with couple of extras.
+
+    One of the greatest benefit of collection over array
+    is collection's ability to trigger events.
+    Collection fires following events:
+
+        * 'add' - when a new item is added.
+        * 'reset' - when entire collection resets.
+        * 'change' - when item in collection fires 'change' event.
+    */
 
     constructor(...args) {
         if (Array.isArray(args) && args.length > 0) {
@@ -19,7 +30,11 @@ class Collection extends Array {
             item_or_items.map((item) => {
                 that.push(item);
                 if (item['on']) {
-                    item.on("all", that._on_model_event, that);
+                    item.on(
+                        "change",
+                        that._on_model_change_event,
+                        that
+                    );
                 }
                 this.trigger("add");
             });
@@ -30,13 +45,18 @@ class Collection extends Array {
         this.push(item_or_items);
 
         if (item_or_items['on']) {
-            item_or_items.on("all", this._on_model_event, this);
+            item_or_items.on(
+                "change",
+                this._on_model_change_event,
+                this
+            );
         }
 
         this.trigger("add");
     }
 
     remove(item_or_items) {
+        // TBA
     }
 
     reset(item_or_items) {
@@ -129,7 +149,9 @@ class Collection extends Array {
         return found;
     }
 
-    _on_model_event(item) {
+    _on_model_change_event(item) {
+        // invoked every time when 'change' event
+        // is fired on collection's item.
         this.trigger("change", item);
     }
 }
