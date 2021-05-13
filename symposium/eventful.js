@@ -86,11 +86,11 @@ class Eventful {
             special_all_hdl;
 
         if (!name) {
-            throw new ValueError("Expects non-empty name (str) as first arg");
+            throw new ValueError("Expects non-empty name as first arg");
         }
 
         if (typeof name != "string") {
-            throw new ValueError("Expects non-empty name (str) as first arg");
+            throw new ValueError("Expects name (str) as first arg");
         }
 
         if (!this._events) {

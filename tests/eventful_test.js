@@ -116,25 +116,25 @@ describe("Eventful test suite", () => {
     assert.throws(
       () => { some_model.trigger(1001); },
       ValueError, // exception to be thrown
-      /Expects non\-empty name \(str\)/i // message of the exeption
+      /Expects/i // message of the exeption
     );
 
     assert.throws(
       () => { some_model.trigger({x: 1001}); },
       ValueError, // exception to be thrown
-      /Expects non\-empty name \(str\)/i // message of the exeption
+      /Expects/i // message of the exeption
     );
 
     assert.throws(
       () => { some_model.trigger(''); },
       ValueError,
-      /Expects non\-empty name \(str\)/i
+      /Expects/i
     );
 
     assert.throws(
       () => { some_model.trigger(); },
       ValueError,
-      /Expects non\-empty name \(str\)/i
+      /Expects/i
     );
   });
 
