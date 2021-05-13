@@ -23,7 +23,7 @@ class TwoCountersModel extends Model {
 }
 
 
-describe("Events test suite", () => {
+describe("Eventful test suite", () => {
 
   it("Can bind/trigger events on class which extends Events", () => {
     let some_model = new SomeModel();
@@ -44,7 +44,6 @@ describe("Events test suite", () => {
       'counter should be incremented.'
     );
   });
-
 
   it("Triggers correct handler", () => {
     /* given two events event_1 and event_2, when
@@ -70,4 +69,43 @@ describe("Events test suite", () => {
     );
   });
 
-});
+  it("Listen on all events.", () => {
+    let model = new SomeModel();
+
+    model.on("all", function() { this.counter += 1; });
+
+    model.trigger("some_event_1");
+    model.trigger("some_event_2");
+
+    assert.equal(
+      model.counter,
+      2,
+      "triggering events must fire handler attached to 'all'"
+    );
+  });
+
+  it("Considers the case when 'all' handlers exists along with others", () => {
+    let model = new TwoCountersModel();
+
+    model.on("all", function() { this.counter_1 += 1; });
+    model.on("some_event_2", function() { this.counter_2 += 1; });
+
+    model.trigger("some_event_1");
+    model.trigger("some_event_1");
+    model.trigger("some_event_2");
+    model.trigger("some_event_2");
+
+    assert.equal(
+      model.counter_1,
+      4, // incremented by handler attached two 'all'
+      "triggering events must fire handler attached to 'all'"
+    );
+
+    assert.equal(
+      model.counter_2,
+      2, // incremented by handler attached two 'some_event_2'
+      "triggering some_event_2 must fire only correct handler"
+    );
+  });
+
+}); // Eventful test suite
