@@ -18,12 +18,20 @@ class Collection extends Array {
         if (item_or_items.length) { // if an array
             item_or_items.map((item) => {
                 that.push(item);
+                if (item['on']) {
+                    item.on("all", that._on_model_event, that);
+                }
             });
             this.trigger("change");
             return;
         }
 
         this.push(item_or_items);
+
+        if (item_or_items['on']) {
+            item_or_items.on("all", this._on_model_event, this);
+        }
+
         this.trigger("change");
     }
 
@@ -118,6 +126,10 @@ class Collection extends Array {
         }
 
         return found;
+    }
+
+    _on_model_event(item) {
+        this.trigger("change", item);
     }
 }
 

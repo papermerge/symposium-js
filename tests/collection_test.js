@@ -12,10 +12,33 @@ class Folder extends Model {
 }
 
 class Document extends Model {
+
   constructor({id, title}) {
     super();
-    this.id = id;
-    this.title = title;
+    this._id = id;
+    this._title = title;
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  set id(value) {
+    this._id = value;
+    this.trigger("change", this, "id", value);
+  }
+
+  get title() {
+    return this._title;
+  }
+
+  set title(value) {
+    this._title = value;
+    this.trigger("change", this);
+  }
+
+  toString() {
+    return `Document(id=${this.id}, title=${this.title})`;
   }
 }
 
@@ -204,6 +227,53 @@ describe("test/collection_test.js", () => {
     // reset collection i.e. make it empty
     col.reset([]);
     assert.equal(col.length, 0, "collection is expected to be empty");
+  });
+
+  it("Fires 'change' event when collection item changes", () => {
+    let col = new Collection(),
+    arr = [
+      new Document({id: 1, title: "invoice_1.pdf"}),
+      new Document({id: 2, title: "invoice_2.pdf"}),
+    ],
+    counter,
+    doc,
+    incr_hdl; // increment handler
+
+    col.add(arr);
+    counter = {value: 0};
+
+    incr_hdl = function() {
+      this.value += 1;
+    };
+
+    // Here is the heart of what we test.
+    // We test that 'change' event is fired
+    // when collection's item changes i.e. collection
+    // item fires 'change' event.
+    // In this regard, collection serves as proxy
+    // of its items' events
+    col.on("change", incr_hdl, counter);
+
+    doc = col.first();
+
+    // title attribute assignment triggers 'change' event on the model
+    // which in turn should trigger collections' 'change'
+    // which in turn will incr counter with 1
+    doc.title = "renamed.pdf";
+
+    assert.equal(
+      counter.value,
+      1,
+      "Collection must fire change handler when collection's item changed."
+    );
+
+    doc.title = "renamed_2.pdf";
+    assert.equal(
+      counter.value,
+      2,
+      "Collection must fire change handler for second time."
+    );
+
   });
 
 });
