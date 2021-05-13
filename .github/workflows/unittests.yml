@@ -6,6 +6,10 @@ on:
 jobs:
   unittests:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [10.x, 14.x, 16.x]
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Node
@@ -14,7 +18,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: |
-          npm -i
+          npm i
       - name: Run unittests
         run: |
           make test
