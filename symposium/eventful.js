@@ -1,3 +1,5 @@
+import { ValueError } from "./exceptions";
+
 
 const EV_ALL = 'all';
 
@@ -83,6 +85,14 @@ class Eventful {
             // which will be fired for all events
             special_all_hdl;
 
+        if (!name) {
+            throw new ValueError("Expects non-empty name (str) as first arg");
+        }
+
+        if (typeof name != "string") {
+            throw new ValueError("Expects non-empty name (str) as first arg");
+        }
+
         if (!this._events) {
             this._events = {};
         }
@@ -101,13 +111,15 @@ class Eventful {
             handlers = handlers.concat(special_all_hdl);
         }
 
-        if (Array.isArray(handlers)) {
-            for (let i=0; i < handlers.length; i++) {
-                callback = handlers[i].callback;
-                context = handlers[i].context;
-                callback.apply(context, args);
-            }
+        if (!Array.isArray(handlers)) {
+            return;
         }
+        // handlers is an Array
+        handlers.forEach((handler) => {
+            callback = handler.callback;
+            context = handler.context;
+            callback.apply(context, args);
+        });
     }
 }
 

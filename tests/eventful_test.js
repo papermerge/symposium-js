@@ -1,6 +1,7 @@
 import { assert } from "chai";
 
 import { Model } from '../symposium/model';
+import { ValueError } from "../symposium/exceptions";
 
 
 class SomeModel extends Model {
@@ -19,7 +20,6 @@ class TwoCountersModel extends Model {
     this.counter_1 = counter_1;
     this.counter_2 = counter_2;
   }
-
 }
 
 
@@ -105,6 +105,36 @@ describe("Eventful test suite", () => {
       model.counter_2,
       2, // incremented by handler attached two 'some_event_2'
       "triggering some_event_2 must fire only correct handler"
+    );
+  });
+
+  it("minds garbage input for trigger function", () => {
+    let some_model = new SomeModel();
+
+    some_model.on('some_event', function() { this.counter += 1; });
+
+    assert.throws(
+      () => { some_model.trigger(1001); },
+      ValueError, // exception to be thrown
+      /Expects non\-empty name \(str\)/i // message of the exeption
+    );
+
+    assert.throws(
+      () => { some_model.trigger({x: 1001}); },
+      ValueError, // exception to be thrown
+      /Expects non\-empty name \(str\)/i // message of the exeption
+    );
+
+    assert.throws(
+      () => { some_model.trigger(''); },
+      ValueError,
+      /Expects non\-empty name \(str\)/i
+    );
+
+    assert.throws(
+      () => { some_model.trigger(); },
+      ValueError,
+      /Expects non\-empty name \(str\)/i
     );
   });
 
