@@ -39,6 +39,7 @@ class Collection extends Array {
             // avoid triggering twice "change" event
             this.trigger("change");
         }
+        this.trigger("reset");
     }
 
     get(attrs) {
