@@ -33,7 +33,7 @@ class Collection extends Array {
                     item.on(
                         "change",
                         that._on_model_change_event,
-                        that
+                        {collection: that, item: item}
                     );
                 }
                 this.trigger("add");
@@ -48,7 +48,7 @@ class Collection extends Array {
             item_or_items.on(
                 "change",
                 this._on_model_change_event,
-                this
+                {collection: this, item: item_or_items}
             );
         }
 
@@ -150,9 +150,16 @@ class Collection extends Array {
     }
 
     _on_model_change_event(item) {
-        // invoked every time when 'change' event
-        // is fired on collection's item.
-        this.trigger("change", item);
+        /* invoked every time when 'change' event
+         is fired on collection's item.
+
+        Caution! method has following context:
+
+        `this.collection` is current collection
+        `this.item` is the item on which change event was fired
+        */
+
+        this.collection.trigger("change", this.item);
     }
 }
 

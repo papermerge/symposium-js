@@ -276,6 +276,53 @@ describe("test/collection_test.js", () => {
 
   });
 
+  it("Fires 'change' event with item as argument", () => {
+    let col = new Collection(),
+    arr = [
+      new Document({id: 1, title: "invoice_1.pdf"}),
+      new Document({id: 2, title: "invoice_2.pdf"}),
+    ],
+    doc,
+    func_hdl,
+    counter = 0;
+
+    col.add(arr);
+    doc = col.first();
+
+    assert.equal(
+      doc.title,
+      "invoice_1.pdf",
+      "First item added is expected to be invoice_1.pdf"
+    );
+
+    func_hdl = function(item) {
+      assert.isDefined(
+        item,
+        "First argument passed to the handler must be a Document instance!"
+      );
+      assert.equal(
+        item.title,
+        "new_title.pdf",
+        "item is expected to be doc with title='new_title.pdf'"
+      );
+      assert.equal(
+        item.id,
+        1,
+        "item is expected to be doc with id=1"
+      );
+      counter += 1;
+    };
+
+    col.on("change", func_hdl, this);
+    doc.title = "new_title.pdf"; // triggers 'change' event on the Document
+
+    assert.equal(
+      counter,
+      1,
+      "Handler was not invoked!"
+    );
+  });
+
   it("Fires 'reset' event when collections resets", () => {
     let col = new Collection(),
       counter,
