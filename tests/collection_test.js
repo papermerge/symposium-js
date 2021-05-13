@@ -276,4 +276,69 @@ describe("test/collection_test.js", () => {
 
   });
 
+  it("Fires 'reset' event when collections resets", () => {
+    let col = new Collection(),
+      counter,
+      incr_hdl = function() { this.value += 1; };
+
+    counter = {value: 0};
+    col.on("reset", incr_hdl, counter);
+
+    assert.equal(
+      counter.value,
+      0
+    )
+    col.reset([1, 2, 3]);
+
+    assert.equal(
+      counter.value,
+      1,
+      "Event reset not fired by the collection"
+    );
+  });
+
+  it("Fires 'add' event when items are added", () => {
+    let col = new Collection(),
+      counter,
+      incr_hdl = function() { this.value += 1; };
+
+    counter = {value: 0};
+    col.on("add", incr_hdl, counter);
+
+    assert.equal(
+      counter.value,
+      0
+    )
+    col.add("item-1");
+    col.add("item-2");
+    col.add("item-3");
+
+    assert.equal(
+      counter.value,
+      3,
+      "Event add not fired by the collection"
+    );
+  });
+
+  it("Fires 'add' event for each item added", () => {
+    let col = new Collection(),
+      counter,
+      incr_hdl = function() { this.value += 1; };
+
+    counter = {value: 0};
+    col.on("add", incr_hdl, counter);
+
+    assert.equal(
+      counter.value,
+      0
+    )
+    col.add(["item-1", "item-2", "item-3"]);
+
+    assert.equal(
+      counter.value,
+      3,
+      "Event add not fired by the collection"
+    );
+  });
+
 });

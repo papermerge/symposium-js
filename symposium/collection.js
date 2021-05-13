@@ -15,14 +15,15 @@ class Collection extends Array {
     add(item_or_items) {
         let that = this;
 
-        if (item_or_items.length) { // if an array
+        if (Array.isArray(item_or_items)) { // if an array
             item_or_items.map((item) => {
                 that.push(item);
                 if (item['on']) {
                     item.on("all", that._on_model_event, that);
                 }
+                this.trigger("add");
             });
-            this.trigger("change");
+
             return;
         }
 
@@ -32,7 +33,7 @@ class Collection extends Array {
             item_or_items.on("all", this._on_model_event, this);
         }
 
-        this.trigger("change");
+        this.trigger("add");
     }
 
     remove(item_or_items) {
