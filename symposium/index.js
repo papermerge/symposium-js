@@ -1,10 +1,15 @@
-import { Eventful } from "./eventful";
-import { Model } from "./model";
-import { Collection } from "./collection";
-import { View } from "./view";
-import { Renderman } from "./renderman";
-import * as exceptions from "./exceptions";
-import * as Utils from "./utils";
+import "./scss/index.scss";
+
+import {
+    Eventful,
+    Model,
+    Collection,
+    View,
+    Renderman,
+} from "./js/index";
+
+import * as exceptions from "./js/exceptions";
+import * as Utils from "./js/utils";
 
 
 export {

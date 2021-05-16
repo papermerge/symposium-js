@@ -25,6 +25,17 @@ module.exports = {
   },
   module: {
     rules: [
+      { // css/scss
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      }, // end of css/scss rule
       {  // for js files
         test: /\.js$/,
         exclude: ["/node_modules/"],

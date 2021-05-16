@@ -1,7 +1,7 @@
 import { assert } from "chai";
 
-import { Model } from '../symposium/model';
-import { ValueError } from "../symposium/exceptions";
+import { Model } from '../symposium/js/model';
+import { ValueError } from "../symposium/js/exceptions";
 
 
 class SomeModel extends Model {

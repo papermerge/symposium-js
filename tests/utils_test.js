@@ -4,7 +4,7 @@ import {
     applyMixins,
     isFunction,
     uniqueId
-} from '../symposium/utils';
+} from '../symposium/js/utils';
 
 
 describe("test/lib/utils_test.js", () => {
