@@ -1,7 +1,7 @@
 import $ from "jquery";
 
-import { Eventful } from "./eventful";
-import { applyMixins, isFunction, uniqueId } from "./utils";
+import { Eventful } from "../eventful";
+import { applyMixins, isFunction, uniqueId } from "../utils";
 
 
 class View {
