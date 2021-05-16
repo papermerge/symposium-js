@@ -1,7 +1,7 @@
 $foreground: #55daff;
 
 .loader {
-  visibility: visible;
+  visibility: hidden;
 }
 
 .loader, .loader:before, .loader:after {
@@ -12,11 +12,9 @@ $foreground: #55daff;
     height: 4em;
   }
 
-
 .loader.small {
   font-size: 5px;
 }
-
 
 .loader {
 
@@ -38,7 +36,6 @@ $foreground: #55daff;
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 
-
   &:before, &:after {
     position: absolute;
     top: 0;
@@ -55,6 +52,7 @@ $foreground: #55daff;
     left: 1.5em;
   }
 }
+
 
 @mixin load-frames {
   0%, 80%, 100% {

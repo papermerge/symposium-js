@@ -66,7 +66,7 @@ class Collection extends Array {
             this.add(item_or_items);
         } else {
             // avoid triggering twice "change" event
-            this.trigger("change");
+            this.trigger("add");
         }
         this.trigger("reset");
     }
