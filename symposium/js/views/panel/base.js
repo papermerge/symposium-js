@@ -174,6 +174,23 @@ class PanelBaseView extends View {
         }
     }
 
+    render_to_string() {
+
+        let html_panel = "",
+            context = {};
+
+        if (!this.collection) {
+            return html_panel;
+        }
+        context['objects'] = this.collection;
+        html_panel = this.template_engine.render(
+            this.template_name,
+            context
+        );
+
+        return html_panel;
+    }
+
     render() {
         let panel_html = this.render_to_string();
 

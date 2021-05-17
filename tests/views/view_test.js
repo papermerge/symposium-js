@@ -1,0 +1,63 @@
+import { assert } from "chai";
+
+import { View } from '../../symposium/js/views/view';
+
+
+class TemplateEngine {
+  render(whatever) {
+    return `<div>${whatever.value}</div>`;
+  }
+}
+
+const template_engine = new TemplateEngine();
+
+
+class SomeView extends View {
+
+  get default_template_engine() {
+    /*
+    Yes, this references a global instance
+    It is up to the application to provide
+    template engine instance.
+    */
+    return template_engine;
+  }
+
+  render_to_string(whatever) {
+    let _template_engine;
+
+    _template_engine = this.template_engine;
+
+    return _template_engine.render(whatever);
+  }
+}
+
+
+describe("test/views/view_test.js", () => {
+
+  it("can be instanciated", () => {
+    // can be instanciated without arguments
+    let view  = new View();
+
+    assert.isDefined(view);
+  }); // it can be rendered
+
+  it("can be rendered", () => {
+    // Provided `default_template_engine` and `render_to_string`
+    // view can be rendered
+    let view  = new SomeView(),
+      rendered_view,
+      context;
+
+    context = {
+      value: "Hi!"
+    }
+
+    rendered_view = view.render_to_string(context);
+    assert.equal(
+      rendered_view,
+      "<div>Hi!</div>",
+      "View rendering yielded expected string!"
+    );
+  }); // it can be rendere
+});

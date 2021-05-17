@@ -3,20 +3,34 @@ import { TemplateNotFound, ValueError } from "./exceptions";
 
 
 class Renderman {
+    /*
+    Symposium's default template engine.
+
+    The only required for template engine is `render` method.
+    What arguments `render` method receives is not important -
+    it can receive any.
+
+    The only requirements for `render` method is to return
+    a string (which is basically rendered template).
+    */
 
     constructor(templates_map) {
         this.templates_map = templates_map;
     }
 
     render(template_name, context={}) {
+        /*
+        The only requirement for `render` method is
+        to return a string.
+        */
         let templ;
 
-        templ = this.get_template(template_name);
+        templ = this._get_template(template_name);
 
         return renderString(templ, context);
     }
 
-    get_template(template_name) {
+    _get_template(template_name) {
 
         let template = undefined,
             new_template_name;

@@ -7,7 +7,7 @@ import {
 } from '../symposium/js/utils';
 
 
-describe("test/lib/utils_test.js", () => {
+describe("test/utils_test.js", () => {
 
   it("tests isFunction", () => {
     let func = function(){},

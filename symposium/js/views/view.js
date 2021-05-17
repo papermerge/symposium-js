@@ -1,10 +1,31 @@
 import $ from "jquery";
 
 import { Eventful } from "../eventful";
+import { NotImplemented } from "../exceptions";
 import { applyMixins, isFunction, uniqueId } from "../utils";
 
 
 class View {
+
+    get default_template_name() {
+        throw new NotImplemented();
+    }
+
+    get default_template_engine() {
+        throw new NotImplemented();
+    }
+
+    render_to_string() {
+        throw new NotImplemented();
+    }
+
+    get template_name() {
+        return  this.options['template_name'] || this.default_template_name;
+    }
+
+    get template_engine() {
+        return this.options['template_engine'] || this.default_template_engine;
+    }
 
     constructor(options={}) {
         this.options = options;
