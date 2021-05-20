@@ -1,18 +1,22 @@
 import { Collection } from "../collection";
 
-//import { EV_NODE_SELECTED } from "../events";
+import { EV_PANEL_ITEM_SELECTED } from "../events";
 
 
 class CtxMenu extends Collection {
 
     constructor() {
         super();
-  //      this.on(EV_NODE_SELECTED, this.on_node_selected, this);
+        this.on(
+            EV_PANEL_ITEM_SELECTED,
+            this.on_item_panel_selected,
+            this
+        );
     }
 
-    on_node_selected({node, selection}) {
-        this.items.forEach((item) => {
-                item.enabled = item.condition({selection});
+    on_item_panel_selected({item, selection}) {
+        this.forEach((i) => {
+                i.enabled = i.condition({selection});
             }
         );
         this.trigger("change");

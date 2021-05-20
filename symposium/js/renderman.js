@@ -25,12 +25,12 @@ class Renderman {
         */
         let templ;
 
-        templ = this._get_template(template_name);
+        templ = this.get_template(template_name);
 
         return renderString(templ, context);
     }
 
-    _get_template(template_name) {
+    get_template(template_name) {
 
         let template = undefined,
             new_template_name;
