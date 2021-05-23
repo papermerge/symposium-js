@@ -26,6 +26,10 @@ function isFunction(func) {
   return false
 }
 
+function isString(some_str) {
+  return typeof some_str === "string";
+}
+
 function is_non_empty_array(arr) {
   return Array.isArray(arr) && arr.length > 0;
 }
@@ -34,5 +38,6 @@ export {
   applyMixins,
   uniqueId,
   isFunction,
+  isString,
   is_non_empty_array
 };

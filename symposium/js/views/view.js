@@ -2,7 +2,12 @@ import $ from "jquery";
 
 import { Eventful } from "../eventful";
 import { NotImplemented } from "../exceptions";
-import { applyMixins, isFunction, uniqueId } from "../utils";
+import {
+    applyMixins,
+    isFunction,
+    isString,
+    uniqueId
+} from "../utils";
 
 
 class View {
@@ -12,10 +17,6 @@ class View {
     }
 
     get default_template_engine() {
-        throw new NotImplemented();
-    }
-
-    render_to_string() {
         throw new NotImplemented();
     }
 
@@ -90,13 +91,28 @@ class View {
         return this;
     }
 
-    _setElement(el) {
-        if (el instanceof $) {
-            this.$el = el;
-        } else {
-            this.$el = $(el);
+    _setElement(element) {
+        /*
+        element passed here can be either string or an HTMLElement
+        */
+        if (element instanceof HTMLElement){
+            this.$el = $(element);
+            this.el = element;
+        } else if (isString(element)){
+            this.$el = $(element);
+            this.el = document.querySelector(element);
         }
-        this.el = this.$el[0];
+    }
+
+    render_to_string() {
+        let html, context = {};
+
+        html = this.template_engine.render(
+            this.template_name,
+            context
+        );
+
+        return html;
     }
 
     render() {
