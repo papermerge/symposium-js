@@ -69,6 +69,9 @@ class View {
     }
 
     delegate(eventName, selector, listener) {
+        if (!this.$el) {
+            return;
+        }
         this.$el.on(
             eventName + '.delegateEvents' + this.cid,
             selector,
@@ -78,6 +81,9 @@ class View {
     }
 
     undelegateEvents() {
+        if (!this.$el) {
+            return;
+        }
         if (this.$el) {
             this.$el.off('.delegateEvents' + this.cid);
         }
@@ -93,9 +99,12 @@ class View {
 
     _setElement(element) {
         /*
-        element passed here can be either string or an HTMLElement
+        element passed here can be one of following
+            * string
+            * HTMLElement
+            * HTMLDocument
         */
-        if (element instanceof HTMLElement){
+        if (element instanceof HTMLElement || element instanceof HTMLDocument){
             this.$el = $(element);
             this.el = element;
         } else if (isString(element)){

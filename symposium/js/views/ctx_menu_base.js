@@ -12,7 +12,6 @@ class CtxMenuBaseView extends View {
         super(options);
         this.collection = collection;
         this.options = options;
-        this.el = options['el'];
         this.el_menu = options['el_menu'];
     }
 
