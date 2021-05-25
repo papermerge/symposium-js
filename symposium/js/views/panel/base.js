@@ -25,7 +25,6 @@ class PanelBaseView extends View {
     }) {
         super(options);
         this.collection = collection;
-        this.options = Object.assign({}, this.default_options, options);
     }
 
     events() {

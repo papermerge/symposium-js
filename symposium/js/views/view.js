@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import { Eventful } from "../eventful";
-import { NotImplemented } from "../exceptions";
+import { NotImplemented, ValueError } from "../exceptions";
 import {
     applyMixins,
     isFunction,
@@ -104,6 +104,21 @@ class View {
             * HTMLElement
             * HTMLDocument
         */
+        let msg;
+
+        if (element === undefined) {
+            // this is absolutely OK.
+            // Many times element is set as part of setElement(options['el'])
+            // where options does not have `el` key i.e. options['el'] === undefined
+            return;
+        }
+        if (element === null) {
+            // document.querySelector("some value") returns null if
+            // query did not match any element.
+            msg = 'Element is null, possibly result of empty query selector.'
+            console.warn(msg)
+        }
+        // ok, now element is defined and non-null
         if (element instanceof HTMLElement || element instanceof HTMLDocument){
             this.$el = $(element);
             this.el = element;
