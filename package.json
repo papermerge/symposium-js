@@ -1,5 +1,6 @@
 {
-  "name": "symposium",
+  "name": "@papermerge/symposium",
+  "version": "0.1.0",
   "keywords": [
     "framework",
     "model",

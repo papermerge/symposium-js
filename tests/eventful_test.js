@@ -138,4 +138,129 @@ describe("Eventful test suite", () => {
     );
   });
 
+  it("removes all event listensers with off", () => {
+    let some_model = new SomeModel();
+
+    some_model.on('some_event', function() { this.counter += 1; });
+    some_model.trigger('some_event');
+    some_model.trigger('some_event');
+    assert.equal(
+      some_model.counter,
+      2,
+      'counter should be incremented.'
+    );
+    some_model.off();
+    some_model.trigger('some_event');
+    some_model.trigger('some_event');
+
+    assert.equal(
+      some_model.counter,
+      2,
+      'counter should have stayed same, equal to 2.'
+    );
+  });
+
+  it("removes specificaly named event listener with off", () => {
+    let some_model = new TwoCountersModel();
+
+    some_model.on('event_1', function() { this.counter_1 += 1; });
+    some_model.on('event_2', function() { this.counter_2 += 1; });
+
+    some_model.trigger('event_1');
+    some_model.trigger('event_2');
+    some_model.trigger('event_2');
+
+    assert.equal(
+      some_model.counter_1,
+      1,
+      'counter should be incremented.'
+    );
+    assert.equal(
+      some_model.counter_2,
+      2,
+      'counter should be incremented.'
+    );
+    some_model.off("event_2");
+
+    // listener for event_1 is still there
+    some_model.trigger('event_1');
+    some_model.trigger('event_1');
+    // there is no such event listeners anymore
+    some_model.trigger('event_2');
+    some_model.trigger('event_2');
+
+    assert.equal(
+      some_model.counter_1,
+      3,
+      'Counter 1 should have been incremented.'
+    );
+    assert.equal(
+      some_model.counter_2,
+      2,
+      'Counter 2 should have stayed same.'
+    );
+  });
+
+  it("removes boths named event listener with off", () => {
+    let some_model = new TwoCountersModel();
+
+    some_model.on('event_1', function() { this.counter_1 += 1; });
+    some_model.on('event_2', function() { this.counter_2 += 1; });
+
+    some_model.trigger('event_1');
+    some_model.trigger('event_2');
+    some_model.trigger('event_2');
+
+    assert.equal(
+      some_model.counter_1,
+      1,
+      'counter should be incremented.'
+    );
+    assert.equal(
+      some_model.counter_2,
+      2,
+      'counter should be incremented.'
+    );
+    some_model.off();
+
+    // listener for event_1 is still there
+    some_model.trigger('event_1');
+    some_model.trigger('event_1');
+    // there is no such event listeners anymore
+    some_model.trigger('event_2');
+    some_model.trigger('event_2');
+
+    assert.equal(
+      some_model.counter_1,
+      1,
+      'Counter 1 should have stayed same.'
+    );
+    assert.equal(
+      some_model.counter_2,
+      2,
+      'Counter 2 should have stayed same.'
+    );
+  });
+
+  it("is ok to call -off- multiple times before -on-", () => {
+    let some_model = new SomeModel();
+
+    /*
+      make sure there is no exception thrown when
+      `off` was called before `on`.
+    */
+    some_model.off();
+    some_model.off();
+  });
+
+  it("is ok to call named -off- before -on-", () => {
+    let some_model = new SomeModel();
+
+    /*
+      make sure there is no exception thrown when
+      `off` was called with an argument before `on`.
+    */
+    some_model.off("some_event");
+  });
+
 }); // Eventful test suite

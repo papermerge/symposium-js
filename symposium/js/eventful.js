@@ -52,22 +52,44 @@ class Eventful {
         ```
         */
         if (!this._events) {
-            this._events = {};
+            this._events = new Map();
         }
 
-        if (this._events[name] == undefined) {
-            this._events[name] = [];
+        if (!this._events.has(name)) {
+            this._events.set(name, []);
         };
 
         if (!context) {
             context = this;
         }
 
-        if (Array.isArray(this._events[name])) {
-            this._events[name].push({
+        if (Array.isArray(this._events.get(name))) {
+            this._events.get(name).push({
                 callback: callback,
                 context: context,
             });
+        }
+    }
+
+    off(name) {
+        /*
+        Removes bound listeners for event `name`.
+
+        If `name` is empty - removes all event listeners.
+        */
+        if(!name) {
+            if (this._events) {
+                this._events.clear();
+            } else {
+                console.warn(`-off- called before -on-; name=-${name}-`);
+            }
+            return;
+        }
+
+        if (this._events) {
+            this._events.delete(name);
+        } else {
+            console.warn(`-off- called before -on-; name=-${name}-`);
         }
     }
 
@@ -94,15 +116,15 @@ class Eventful {
         }
 
         if (!this._events) {
-            this._events = {};
+            this._events = new Map();
         }
 
-        handlers = this._events[name];
-        special_all_hdl = this._events[EV_ALL];
+        handlers = this._events.get(name);
+        special_all_hdl = this._events.get(EV_ALL);
 
         if (!handlers) { // there are no other events handlers
             // add EV_ALL event handlers to the list
-            handlers = this._events[EV_ALL];
+            handlers = this._events.get(EV_ALL);
         } else if (Array.isArray(special_all_hdl)) {
             // we have both:
             // usual event handlers and EV_ALL event handlers.
