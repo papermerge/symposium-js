@@ -1,6 +1,10 @@
 {
   "name": "@papermerge/symposium",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/papermerge/symposium.git"
+  },
   "keywords": [
     "framework",
     "model",
@@ -9,8 +13,9 @@
     "light"
   ],
   "author": "Eugen Ciur <eugen@papermerge.com>",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "main": "symposium/index.js",
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
@@ -36,6 +41,5 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.30.0",
     "webpack-cli": "^4.6.0"
-  },
-  "dependencies": {}
+  }
 }
