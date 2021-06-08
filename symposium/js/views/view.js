@@ -20,6 +20,10 @@ class View {
         throw new NotImplemented();
     }
 
+    get default_context() {
+        throw new NotImplemented();
+    }
+
     get template_name() {
         return  this.options['template_name'] || this.default_template_name;
     }

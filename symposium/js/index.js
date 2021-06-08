@@ -2,10 +2,12 @@ import { Eventful } from "./eventful";
 import { Model } from "./model";
 import { CtxMenu } from "./models/ctx_menu";
 import { CtxMenuItem } from "./models/ctx_menu_item";
+import { Breadcrumb } from "./models/breadcrumb";
 import { Collection } from "./collection";
 import { View } from "./views/view";
 import { PanelBaseView } from "./views/panel/base";
 import { CtxMenuBaseView } from "./views/ctx_menu_base";
+import { BreadcrumbBaseView } from "./views/breadcrumb_base";
 import { Renderman } from "./renderman";
 import {
     EV_PANEL_ITEM_DBLCLICK,
@@ -23,8 +25,10 @@ export {
     View,
     CtxMenu,
     CtxMenuItem,
+    Breadcrumb,
     PanelBaseView,
     CtxMenuBaseView,
+    BreadcrumbBaseView,
     Renderman,
     exceptions,
     Utils,
