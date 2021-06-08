@@ -7,3 +7,6 @@ test:
 clean:
 	rm -fr test-dist/
 
+publish:
+	npm publish --access public
+
