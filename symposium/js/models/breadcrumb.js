@@ -93,6 +93,16 @@ class Breadcrumb extends Collection {
         */
         return this.last();
     }
+
+    toString() {
+        let path = "/Home";
+
+        this.forEach(element => {
+            path += "/" + element.title;
+        });
+
+        return `Breadcrumb(${path})`;
+    }
 }
 
 export { Breadcrumb };
