@@ -21,7 +21,7 @@ class View {
     }
 
     get default_context() {
-        throw new NotImplemented();
+        return {};
     }
 
     get template_name() {
@@ -132,12 +132,20 @@ class View {
         }
     }
 
+    show() {
+        this.el.style.display = 'block';
+    }
+
+    hide() {
+        this.el.style.display = 'none';
+    }
+
     render_to_string() {
-        let html, context = {};
+        let html;
 
         html = this.template_engine.render(
             this.template_name,
-            context
+            this.default_context
         );
 
         return html;
