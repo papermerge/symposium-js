@@ -26,7 +26,7 @@ class Eventful {
     A special event named "all" will trigger all handlers.
     */
 
-    on(name, callback, context) {
+    on(name, callback, context, ...args) {
         /*
         Binds to the object event named `name`.
         When triggering the even will fire handler `callback`
@@ -67,6 +67,7 @@ class Eventful {
             this._events.get(name).push({
                 callback: callback,
                 context: context,
+                args: args
             });
         }
     }
@@ -102,6 +103,7 @@ class Eventful {
         */
         let handlers,
             callback,
+            default_args,
             context,
             // special array of handlers
             // which will be fired for all events
@@ -140,7 +142,13 @@ class Eventful {
         handlers.forEach((handler) => {
             callback = handler.callback;
             context = handler.context;
-            callback.apply(context, args);
+            default_args = handler.args
+            
+            if (args.length == 0) {
+                callback.apply(context, default_args);
+            } else {
+                callback.apply(context, args);
+            }
         });
     }
 }
