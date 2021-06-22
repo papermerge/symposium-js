@@ -38,6 +38,19 @@ class View {
         this.setElement(options['el']);
     }
 
+    listenTo(obj, name, callback, ...args) {
+        if (!obj) {
+            throw new ValueError("Expects a defined object");
+        }
+        if (!name) {
+            throw new ValueError("Expects a defined name");
+        }
+        if (!callback) {
+            throw new ValueError("Expects a defined callback");
+        }
+        obj.on(name, callback, this, args);
+    }
+
     delegateEvents() {
         let method,
             match,

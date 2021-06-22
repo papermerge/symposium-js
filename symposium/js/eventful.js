@@ -151,6 +151,7 @@ class Eventful {
             }
         });
     }
+
 }
 
 export { Eventful, EV_ALL };
