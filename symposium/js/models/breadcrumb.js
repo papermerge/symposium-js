@@ -66,7 +66,7 @@ class Breadcrumb extends Collection {
         found = this.get({id: folder.id});
         if (!found) {
             this.push(folder);
-            this.trigger("change-parent");
+            this.trigger("change-parent", folder);
             return;
         }
 
@@ -82,7 +82,7 @@ class Breadcrumb extends Collection {
             // to our own advantage.
             this.length = index + 1;
         }
-        this.trigger("change-parent");
+        this.trigger("change-parent", folder);
     }
 
     get parent() {
