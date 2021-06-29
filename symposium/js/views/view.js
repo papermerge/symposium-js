@@ -38,7 +38,36 @@ class View {
         this.setElement(options['el']);
     }
 
-    listenTo(obj, name, callback, ...args) {
+    listenTo(obj, name, callback, ...default_args) {
+        /* Listens to given object for events.
+
+        When named events occur - trigger given callback with default arguments.
+        Notice that default callback's arguments are used only if event trigger
+        is called without callback arguments:
+
+            Example 1: trigger called without callback arguments
+
+                model.trigger("open")
+
+            Example 2: trigger called with callback arguments:
+
+                model.trigger("open", doc_dict, breadcrumb_path);
+
+        `name` is either string name of one event e.g. "open" or
+        it can be a string of comma separated events e.g. "reset, change".
+
+        `callback` is the function which will be invoked when named event(s) occur.
+        Notice that `callback` will always be called with same context as the current
+        view (`view_instance.listenTo` -> callback will have context of `view_instance`).
+
+        Examples:
+
+            this.listenTo(this.collection, "change, reset", this.render);
+            this.listenTo(this.model, "change", this.render);
+        */
+        let arr_of_names,
+            that = this;
+
         if (!obj) {
             throw new ValueError("Expects a defined object");
         }
@@ -48,7 +77,19 @@ class View {
         if (!callback) {
             throw new ValueError("Expects a defined callback");
         }
-        obj.on(name, callback, this, args);
+        arr_of_names = name.split(',');
+
+        if (arr_of_names.length == 1) {
+            // there were no commas in name
+            obj.on(name, callback, this, default_args);
+        } else {
+            // multiple events provided
+            // add event listener for each of them
+            arr_of_names = arr_of_names.map(item => item.trim());
+            arr_of_names.forEach(
+                item => obj.on(item, callback, that, default_args)
+            );
+        }
     }
 
     delegateEvents() {

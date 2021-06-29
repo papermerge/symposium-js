@@ -99,4 +99,28 @@ describe("test/views/view_test.js", () => {
             "listenTo didnt complain about undefined model"
         );
     });
+
+    it("can listenTo multiple events separated by comma", () => {
+        let view = new View(),
+            model = new SomeModel(),
+            count = 0;
+
+        view.listenTo(model, "event_x, event_y", () => { count++ });
+
+        model.trigger("event_x");
+        model.trigger("event_y");
+
+        assert.equal(
+            count,
+            2,
+            "count should have been incremented twice"
+        );
+
+        model.trigger("event_z");
+        assert.equal(
+            count,
+            2,
+            "count should have been stayed same"
+        );
+    });
 });
