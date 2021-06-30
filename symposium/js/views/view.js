@@ -190,8 +190,16 @@ class View {
         this.el.style.display = 'block';
     }
 
+    is_visible() {
+        return this.el.style.display == 'block';
+    }
+
     hide() {
         this.el.style.display = 'none';
+    }
+
+    is_hidden() {
+        return this.el.style.display == 'none';
     }
 
     render_to_string() {

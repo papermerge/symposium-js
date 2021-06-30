@@ -98,7 +98,8 @@ class Eventful {
         /*
         Trigger handers for event named `name`.
 
-        Event handlers are invoked with `...args` arguments.
+        Event handlers are invoked with `...args` arguments +default args
+        supplied by `on` method.
         A special event named "all" will trigger all handlers.
         */
         let handlers,
@@ -143,12 +144,8 @@ class Eventful {
             callback = handler.callback;
             context = handler.context;
             default_args = handler.args
-            
-            if (args.length == 0) {
-                callback.apply(context, default_args);
-            } else {
-                callback.apply(context, args);
-            }
+
+            callback.apply(context, args.concat(default_args));
         });
     }
 
