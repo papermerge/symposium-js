@@ -21,6 +21,7 @@ import {
 
 import * as exceptions from "./js/exceptions";
 import * as Utils from "./js/utils";
+import { settings } from "./js/conf";
 
 
 export {
@@ -37,6 +38,7 @@ export {
     Renderman,
     exceptions,
     Utils,
+    settings,
     EV_PANEL_ITEM_DBLCLICK,
     EV_PANEL_ITEM_CLICK,
     EV_PANEL_ITEM_SELECTED,
