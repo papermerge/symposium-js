@@ -33,4 +33,25 @@ class ValueError extends Exception {
 }
 
 
-export { TemplateNotFound, ValueError, NotImplemented };
+class UrlPathNotFound extends Exception {
+    /* Used in Urlconf if path was not found */
+    constructor(message) {
+        super(message);
+        this.name = 'UrlPathNotFound';
+    }
+}
+
+class UnresolvedURLParams extends Exception {
+    constructor(message) {
+        super(message);
+        this.name = 'UnresolvedURLParams';
+    }
+}
+
+export {
+    TemplateNotFound,
+    ValueError,
+    NotImplemented,
+    UrlPathNotFound,
+    UnresolvedURLParams
+};
