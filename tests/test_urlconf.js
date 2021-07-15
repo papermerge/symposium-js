@@ -3,6 +3,8 @@ import { assert } from "chai";
 import {
     Path,
     UrlConf,
+    replace_optional_params,
+    replace_mandatory_params
 } from '../symposium/js/urlconf';
 
 import { UnresolvedURLParams } from "../symposium/js/exceptions";
@@ -58,6 +60,30 @@ describe("test/test_urlconf.js:Path", () => {
             "Returned url expected to be document/36/page/100/"
         );
     });
+
+    it("handles optional params", () => {
+        // optional params are speficied between
+        // brackets
+        let path;
+
+        path = new Path(
+            "folder/(:folder_id/)",  // :folder_id is optional
+            "folder"  // url name
+        );
+
+        assert.equal(
+            "folder/36/",
+            path.url({folder_id: 36}),
+            "Filling in optional param didnt work"
+        );
+
+        assert.equal(
+            "folder/",
+            path.url(), // no params is OK, as :folder_id is optional
+            "Passing empty args didnt work"
+        );
+    });
+
 });
 
 describe("test/test_urlconf.js:UrlConf", () => {
@@ -103,6 +129,37 @@ describe("test/test_urlconf.js:UrlConf", () => {
             () => { urlconf.url("folder"); /* no object passed */ },
           UnresolvedURLParams, // exception to be thrown
           /Unresolved/i // message of the exeption
+        );
+    });
+});
+
+
+describe("test/test_urlconf.js:replace_optional_params", () => {
+    it("replace_optional_params", () => {
+        assert.equal(
+            replace_optional_params("folder/(:folder_id/)", {}),
+            "folder/",
+            "Assertion #1"
+        );
+        assert.equal(
+            replace_optional_params("folder/(:folder_id/)", {folder_id: 202}),
+            "folder/202/",
+            "Assertion #2"
+        );
+        assert.equal(
+            replace_optional_params("folder/(:folder_id/)"),
+            "folder/",
+            "Assertion #3"
+        );
+    });
+});
+
+describe("test/test_urlconf.js:replace_mandatory_params", () => {
+    it("replace_mandatory_params", () => {
+        assert.equal(
+            replace_mandatory_params("folder/:folder_id/", {folder_id: 99}),
+            "folder/99/",
+            "Assertion #1"
         );
     });
 });

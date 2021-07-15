@@ -11,6 +11,51 @@ function path(url_pattern, name) {
 }
 
 
+function replace_mandatory_params(url_pattern, obj) {
+    let ret;
+
+    ret = url_pattern.replace(/:\w+/g,
+        function(match) {
+            let named_param;
+
+            // mandatory params starts with ":"
+            named_param = match.substring(1);
+            if (!obj[named_param]) {
+                throw new UnresolvedURLParams(
+                    `Unresolved named param '${named_param}'`
+                );
+            }
+            return obj[named_param];
+        }
+    ); // end of replace method
+
+    return ret;
+}
+
+
+function replace_optional_params(url_pattern, obj) {
+    let ret;
+
+    ret = url_pattern.replace(/(\(\:[\w\/]+\))/g,
+        function(match) {
+            let named_param;
+            named_param = match.substring(2);
+            named_param = named_param.replace(/\/\)/g, '');
+            if (!obj || !obj[named_param]) {
+                return '';
+            }
+            // HACK
+            if (match.search(/\//) >= 0) {
+                return `${obj[named_param]}/`;
+            }
+            return obj[named_param];
+        }
+    ); // end of replace method
+
+    return ret;
+} // _replace_optional_params
+
+
 class Path {
     /*
         Path is named URL pattern.
@@ -26,13 +71,22 @@ class Path {
             path = new Path("document/:document_id/", "document");
             path.name => "document"
 
-            however:
+        However:
 
             path.url() => will throw exception "UnresolvedURLPattern".
 
-            To fix it:
+        To fix it:
 
             path.url({document_id: 34}) => "document/34/"
+
+        Path also supports optinal params:
+
+            path = new Path("folder/(:folder_id/)", "folder")
+
+        In this case `folder_id` may or may not be provided:
+
+            path.url() => It is OK and produces "folder/"
+            path.url({folder_id: 202}) => "folder/202/"
     */
     constructor(url_pattern, name) {
         this._url_pattern = url_pattern;
@@ -50,33 +104,28 @@ class Path {
         path = new Path("/document/:document_id/page/:page_id/", "page");
         path.url({page_id: 34, document_id: 100}) => "/document/100/page/34/";
         */
-        let result_url;
-        const named_param_regexp = new RegExp(/:\w+/g);
+        let url_step_1,
+            url_step_2;
 
         if (!obj) {
-            if (this._url_pattern.search(named_param_regexp) >= 0) {
-               // url contains named params, however no `obj` was provided
+            if (this._url_pattern.search(/[^\(]:\w+/g) >= 0) {
+               // url contains MANDATORY named params, however no `obj` was provided
+               // mandatory named params DO NOT START with open bracket
                throw new UnresolvedURLParams("Unresolved params found");
             }
-            // object not provided, but it is ok, as we don't have named params
-            return this._url_pattern;
         }
 
-        result_url = this._url_pattern.replace(named_param_regexp,
-            function(match) {
-                let named_param;
-
-                named_param = match.substring(1);
-                if (!obj[named_param]) {
-                    throw new UnresolvedURLParams(
-                        `Unresolved named param '${named_param}'`
-                    );
-                }
-                return obj[named_param];
-            }
+        url_step_1 = replace_optional_params(
+            this._url_pattern,
+            obj
         );
 
-        return result_url;
+        url_step_2 = replace_mandatory_params(
+            url_step_1,
+            obj
+        );
+
+        return url_step_2;
     }
 
     get name() {
@@ -123,4 +172,10 @@ class UrlConf {
 }
 
 
-export { UrlConf, path, Path };
+export {
+    UrlConf,
+    path,
+    Path,
+    replace_optional_params,
+    replace_mandatory_params
+};

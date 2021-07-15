@@ -16,7 +16,10 @@ import {
     EV_PANEL_ITEM_DBLCLICK,
     EV_PANEL_ITEM_CLICK,
     EV_PANEL_ITEM_SELECTED,
-    EV_CTX_MENU_ITEM_CLICK
+    EV_CTX_MENU_ITEM_CLICK,
+    UrlConf,
+    Path,
+    path
 } from "./js/index";
 
 import * as exceptions from "./js/exceptions";
@@ -42,5 +45,8 @@ export {
     EV_PANEL_ITEM_DBLCLICK,
     EV_PANEL_ITEM_CLICK,
     EV_PANEL_ITEM_SELECTED,
-    EV_CTX_MENU_ITEM_CLICK
+    EV_CTX_MENU_ITEM_CLICK,
+    UrlConf,
+    Path,
+    path
 };
