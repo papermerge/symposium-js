@@ -41,10 +41,10 @@ class PanelBaseView extends View {
         let current_target = event.currentTarget,
             item_id,
             item,
-            new_state,
             parent,
             current_selection;
 
+        console.log("on_item_selected");
         // parent is DOM element with .node class,
         // which among others contains the checkbox
         parent = current_target.parentNode;
@@ -64,12 +64,7 @@ class PanelBaseView extends View {
             return;
         }
 
-        new_state = item.toggle_selection();
-        if (new_state) {
-            parent.classList.add('checked');
-        } else {
-            parent.classList.remove('checked');
-        }
+        item.toggle_selection();
 
         current_selection = this.collection.filter(
             (item) => { return item.is_selected; }
