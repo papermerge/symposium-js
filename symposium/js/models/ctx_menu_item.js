@@ -4,9 +4,14 @@ class CtxMenuItem {
     It can be an item in context menu (e.g. models.ctx_menu.CtxMenu)
     or an item in some sort of panel similar functionality like
     context menu.
+
+    `this.parent_view` attribute is instance to view inside which
+    context menu was declared. For example in case of commander instance's ctx menu,
+    the `parent_view` is instance of commander itself (i.e. commander view).
     */
 
     constructor({
+        parent_view,
         id,
         title,
         icon_class,
@@ -14,6 +19,8 @@ class CtxMenuItem {
         enabled=true,
         run
     }){
+        // references to the parental view (e.g. commander's view instance)
+        this.parent_view = parent_view;
         this.id = id;
         this.title = title;
         this.icon_class = icon_class;
