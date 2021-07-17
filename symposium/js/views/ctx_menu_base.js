@@ -10,9 +10,16 @@ class CtxMenuBaseView extends View {
         options={}
     }) {
         super(options);
+        let that = this;
+
         this.collection = collection;
         this.options = options;
         this.el_menu = options['el_menu'];
+
+        document.addEventListener('click', function(event) {
+            // any user click will close context menu
+            that._dropdown_close();
+        });
     }
 
     events() {
@@ -88,6 +95,21 @@ class CtxMenuBaseView extends View {
         }
 
         return html;
+    }
+
+    _dropdown_close() {
+        let dropdown_menu;
+
+        if (this.el_menu) {
+            dropdown_menu = this.el_menu.querySelector('.dropdown-menu');
+            if (dropdown_menu) {
+                dropdown_menu.classList.remove('show');
+            } else {
+                console.error(".dropdown-menu not found");
+            }
+        } else {
+            console.error("el_menu is undefined");
+        }
     }
 
     _dropdown_toggle() {
