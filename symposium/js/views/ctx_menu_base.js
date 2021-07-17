@@ -104,11 +104,7 @@ class CtxMenuBaseView extends View {
             dropdown_menu = this.el_menu.querySelector('.dropdown-menu');
             if (dropdown_menu) {
                 dropdown_menu.classList.remove('show');
-            } else {
-                console.error(".dropdown-menu not found");
             }
-        } else {
-            console.error("el_menu is undefined");
         }
     }
 
