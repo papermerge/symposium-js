@@ -44,7 +44,6 @@ class PanelBaseView extends View {
             parent,
             current_selection;
 
-        console.log("on_item_selected");
         // parent is DOM element with .node class,
         // which among others contains the checkbox
         parent = current_target.parentNode;
