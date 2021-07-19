@@ -2,6 +2,11 @@ import { Eventful } from "./eventful";
 import { applyMixins, is_non_empty_array } from "./utils";
 
 
+function default_get_fn(value) {
+    return value.id;
+}
+
+
 class Collection extends Array {
     /*
     Collection is sort of Array with couple of extras.
@@ -11,6 +16,7 @@ class Collection extends Array {
     Collection fires following events:
 
         * 'add' - when a new item is added.
+        * 'remove' - when item is removed from collection.
         * 'reset' - when entire collection resets.
         * 'change' - when item in collection fires 'change' event.
     */
@@ -55,8 +61,37 @@ class Collection extends Array {
         this.trigger("add");
     }
 
-    remove(item_or_items) {
-        // TBA
+    remove(item_or_items, get_fn=default_get_fn) {
+        /*
+            Removes one of several elements from the collection.
+
+            For each removed element fires `remove` event.
+        */
+        let that = this;
+
+        if (Array.isArray(item_or_items)) { // if an array
+            item_or_items.forEach((item) => {
+                that._remove_one_item(item, get_fn);
+            });
+
+        } else { // item_or_items is not an array
+            this._remove_one_item(item_or_items, get_fn);
+        }
+    }
+
+    _remove_one_item(item, get_fn=default_get_fn) {
+        let found_index;
+
+        found_index = this.findIndex(
+            (i) => { return get_fn(i) === get_fn(item); }
+        );
+        if (found_index >= 0) {
+            if (this[found_index]['off']) {
+                this[found_index].off('change');
+            }
+            this.splice(found_index, 1);
+            this.trigger('remove');
+        }
     }
 
     reset(item_or_items) {
