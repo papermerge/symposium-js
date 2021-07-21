@@ -25,6 +25,7 @@ import {
 import * as exceptions from "./js/exceptions";
 import * as Utils from "./js/utils";
 import { settings } from "./js/conf";
+import { Request, JsonRequest } from "./js/requests";
 
 
 export {
@@ -48,5 +49,7 @@ export {
     EV_CTX_MENU_ITEM_CLICK,
     UrlConf,
     Path,
-    path
+    path,
+    Request,
+    JsonRequest
 };
