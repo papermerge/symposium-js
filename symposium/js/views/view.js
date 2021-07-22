@@ -20,6 +20,10 @@ class View {
         throw new NotImplemented();
     }
 
+    get default_urlconf() {
+        throw new NotImplemented();
+    }
+
     get default_context() {
         return {};
     }
@@ -93,6 +97,18 @@ class View {
     }
 
     delegateEvents() {
+        /* Delegates/Setups view events.
+
+        View can receive events from two sources:
+            - DOM/User UI
+            - Websockets
+        */
+        this._delegateDOMEvents();
+        this._delegateWSEvents();
+    }
+
+    _delegateDOMEvents() {
+        // delegates DOM related events
         let method,
             match,
             _method,
@@ -110,7 +126,7 @@ class View {
             events = events();
         }
 
-        this.undelegateEvents();
+        this._undelegateDOMEvents();
 
         for (let key in events) {
             method = events[key];
@@ -123,7 +139,50 @@ class View {
             match = key.match(/^(\S+)\s*(.*)$/);
             this.delegate(match[1], match[2], _method.bind(this));
         }
-        return this;
+    }
+
+    _delegateWSEvents() {
+        // delegates websocket related events
+        // delegates DOM related events
+        let method,
+            match,
+            _method,
+            wsevents;
+
+        if (this.wsevents) {
+            wsevents = this.wsevents;
+        };
+
+        if (!wsevents) {
+            return this;
+        }
+
+        if (isFunction(wsevents)) {
+            wsevents = wsevents();
+        }
+
+        this._undelegateWSEvents();
+
+        for (let key in wsevents) {
+            method = wsevents[key];
+            if (!isFunction(method)) {
+                _method = this[method];
+            }
+            if (!method) {
+                continue;
+            }
+            match = key.match(/^(\S+)\s*(.*)$/);
+            this.wsdelegate(match[1], match[2], _method.bind(this));
+        }
+    }
+
+    wsdelegate(event_name, event_type, listener) {
+        let url, hostname, socket;
+
+        url = this.default_urlconf.url(event_name);
+        hostname = window.location.host;
+        socket = new WebSocket(`ws://${hostname}${url}`);
+        socket.addEventListener(event_type, listener);
     }
 
     delegate(eventName, selector, listener) {
@@ -139,13 +198,22 @@ class View {
     }
 
     undelegateEvents() {
+        this._undelegateDOMEvents();
+        this._undelegateWSEvents();
+    }
+
+    _undelegateDOMEvents() {
+        // do not track anymore DOM events
         if (!this.$el) {
             return;
         }
         if (this.$el) {
             this.$el.off('.delegateEvents' + this.cid);
         }
-        return this;
+    }
+
+    _undelegateWSEvents() {
+        // do not track anymore websocket events
     }
 
     setElement(element) {

@@ -17,7 +17,7 @@ import {
 } from "./events";
 import * as exceptions from "./exceptions";
 import * as Utils from "./utils";
-import { UrlConf, Path, path } from "./urlconf";
+import { UrlConf, UrlConfs, Path, path } from "./urlconf";
 
 export {
     Eventful,
@@ -38,6 +38,7 @@ export {
     EV_PANEL_ITEM_SELECTED,
     EV_CTX_MENU_ITEM_CLICK,
     UrlConf,
+    UrlConfs,
     Path,
     path
 };

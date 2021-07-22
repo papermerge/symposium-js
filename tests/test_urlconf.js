@@ -92,7 +92,7 @@ describe("test/test_urlconf.js:UrlConf", () => {
         let urlpatterns = [
             new Path('folder/add/', 'folder_add'),
             new Path('folder/:folder_id/', 'folder')
-        ], urlconf, prefix = '/test-prefix';
+        ], urlconf, prefix = 'test-prefix';
 
         urlconf = new UrlConf({prefix, urlpatterns});
 

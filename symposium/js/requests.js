@@ -45,7 +45,7 @@ class Request {
             csrf_header;
 
         this.options['method'] = 'DELETE';
-        this.options['body'] = this.data;
+        this.options['body'] = this.body;
 
         _headers = this.headers;
         // headers updated with csrf token value

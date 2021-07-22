@@ -18,6 +18,7 @@ import {
     EV_PANEL_ITEM_SELECTED,
     EV_CTX_MENU_ITEM_CLICK,
     UrlConf,
+    UrlConfs,
     Path,
     path
 } from "./js/index";
@@ -48,6 +49,7 @@ export {
     EV_PANEL_ITEM_SELECTED,
     EV_CTX_MENU_ITEM_CLICK,
     UrlConf,
+    UrlConfs,
     Path,
     path,
     Request,

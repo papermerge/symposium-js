@@ -3,6 +3,7 @@ import {
     UnresolvedURLParams,
     ValueError
 } from "./exceptions";
+import { Collection } from "./collection";
 
 
 function path(url_pattern, name) {
@@ -153,7 +154,7 @@ class UrlConf {
         }
 
         found_url = found_path.url(obj);
-        ret_url = `${this.prefix}/${found_url}`;
+        ret_url = `/${this.prefix}/${found_url}`;
 
         return ret_url;
     }
@@ -172,8 +173,76 @@ class UrlConf {
 }
 
 
+class UrlConfs extends Collection {
+    /*
+        A collection of urlconf instances.
+
+        Each urlconf instance has its own prefix.
+    */
+    constructor({default_prefix}) {
+        super();
+        this.default_prefix = default_prefix;
+    }
+
+    url(path_name, obj) {
+        /*
+            An `url` method which understands prefixes.
+
+            Example:
+                url('ws:document') will proxy to urlconf instance with 'ws' prefix.
+                url('document') will proxy to urlconf instance with `default_prefix`
+        */
+        let arr,
+            prefix,
+            path,
+            urlconf;
+
+        if (!path_name) {
+            throw new ValueError('Empty path_name');
+        }
+
+        arr = path_name.split(':');
+
+        if (arr && arr.length == 2) {
+            prefix = arr[0];
+            path = arr[1];
+        } else if (arr) {
+            prefix = this.default_prefix;
+            path = arr[0];
+        }
+
+        urlconf = this.get({prefix});
+
+        if (!urlconf) {
+            throw new UrlPathNotFound(`Path '${path_name}' not found`);
+        }
+        // proxy to urlconf with correct prefix
+        return urlconf.url(path, obj);
+    }
+
+    get prefix() {
+        return this.default_prefix;
+    }
+
+    set prefix(value) {
+        this.default_prefix = value;
+    }
+
+    root_url() {
+        let urlconf = this.get({prefix: this.default_prefix});
+
+        if (!urlconf) {
+            throw new UrlPathNotFound(`Path '${path_name}' not found`);
+        }
+
+        return urlconf.root_url();
+    }
+}
+
+
 export {
     UrlConf,
+    UrlConfs,
     path,
     Path,
     replace_optional_params,
