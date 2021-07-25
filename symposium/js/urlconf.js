@@ -225,6 +225,16 @@ class UrlConfs extends Collection {
     }
 
     set prefix(value) {
+        let urlconf = this.get({prefix: this.default_prefix});
+
+        if (!urlconf) {
+            throw new UrlPathNotFound(
+                `Default urlconf (which is ${this.prefix}) not found`
+            );
+        }
+        // set new prefix for default urlconf
+        urlconf.prefix = value;
+        // save new default prefix
         this.default_prefix = value;
     }
 
@@ -232,7 +242,9 @@ class UrlConfs extends Collection {
         let urlconf = this.get({prefix: this.default_prefix});
 
         if (!urlconf) {
-            throw new UrlPathNotFound(`Path '${path_name}' not found`);
+            throw new UrlPathNotFound(
+                `Default urlconf (which is ${this.prefix}) not found`
+            );
         }
 
         return urlconf.root_url();

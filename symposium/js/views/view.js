@@ -137,7 +137,11 @@ class View {
                 continue;
             }
             match = key.match(/^(\S+)\s*(.*)$/);
-            this.delegate(match[1], match[2], _method.bind(this));
+            if (_method) {
+                this.delegate(match[1], match[2], _method.bind(this));
+            } else {
+                console.warn(`For ${match[1]} and ${match[2]} binding method is undefined`);
+            }
         }
     }
 
