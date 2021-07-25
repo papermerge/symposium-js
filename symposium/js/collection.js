@@ -29,7 +29,7 @@ class Collection extends Array {
         }
     }
 
-    add(item_or_items) {
+    add(item_or_items, {silent}={silent: false}) {
         let that = this;
 
         if (Array.isArray(item_or_items)) { // if an array
@@ -42,7 +42,12 @@ class Collection extends Array {
                         {collection: that, item: item}
                     );
                 }
-                this.trigger("add");
+                if (!silent) {
+                    console.log("Triggering add event");
+                    this.trigger("add", item);
+                } else {
+                    console.log("add event was silenced");
+                }
             });
 
             return;
@@ -58,7 +63,12 @@ class Collection extends Array {
             );
         }
 
-        this.trigger("add");
+        if (!silent) {
+            console.log("Triggering add event");
+            this.trigger("add", item_or_items);
+        } else {
+            console.log("add event was silenced");
+        }
     }
 
     remove(item_or_items, get_fn=default_get_fn) {
@@ -90,7 +100,7 @@ class Collection extends Array {
                 this[found_index].off('change');
             }
             this.splice(found_index, 1);
-            this.trigger('remove');
+            this.trigger('remove', item);
         }
     }
 
