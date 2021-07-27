@@ -43,10 +43,7 @@ class Collection extends Array {
                     );
                 }
                 if (!silent) {
-                    console.log("Triggering add event");
                     this.trigger("add", item);
-                } else {
-                    console.log("add event was silenced");
                 }
             });
 
@@ -64,10 +61,7 @@ class Collection extends Array {
         }
 
         if (!silent) {
-            console.log("Triggering add event");
             this.trigger("add", item_or_items);
-        } else {
-            console.log("add event was silenced");
         }
     }
 
